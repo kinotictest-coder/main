@@ -92,7 +92,19 @@ function submit(): void {
 .brand { display: flex; gap: 0.6rem; align-items: flex-start; }
 .brand h1 { font-size: 1.15rem; }
 .brand p { font-size: 0.72rem; margin: 0.15rem 0 0; }
-.brand .dot { margin-top: 0.35rem; }
+.brand .dot {
+    margin-top: 0.35rem;
+    animation: neon-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes neon-pulse {
+    0%, 100% { box-shadow: 0 0 6px var(--accent); opacity: 0.8; }
+    50% { box-shadow: 0 0 16px var(--accent), 0 0 28px var(--accent); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .brand .dot { animation: none; }
+}
 
 nav { display: flex; flex-direction: column; gap: 0.35rem; }
 .board-btn {
