@@ -3,7 +3,7 @@ import type { Board, Task, Tag } from '@main/domain'
 import { todoNeon } from '@/kinotic/todoNeonService'
 import type {
     BoardInput, BoardPatch, TaskInput, TaskPatch, TagInput, TagPatch,
-    TaskStatus, BoardStats,
+    TaskStatus, BoardStats, VibeCheckResult,
 } from '@/kinotic/types'
 
 interface WorkspaceState {
@@ -14,6 +14,8 @@ interface WorkspaceState {
     tags: Tag[]
     tasks: Task[]
     selectedBoardId: string | null
+    vibe: VibeCheckResult | null
+    vibeLoading: boolean
 }
 
 const state = reactive<WorkspaceState>({
@@ -24,6 +26,8 @@ const state = reactive<WorkspaceState>({
     tags: [],
     tasks: [],
     selectedBoardId: null,
+    vibe: null,
+    vibeLoading: false,
 })
 
 const svc = todoNeon
@@ -110,15 +114,28 @@ export function useWorkspace() {
         state.tags = []
         state.tasks = []
         state.selectedBoardId = null
+        state.vibe = null
+        state.vibeLoading = false
     }
 
     async function selectBoard(boardId: string | null): Promise<void> {
         state.selectedBoardId = boardId
+        state.vibe = null
         if (!boardId) return
         const tasks = await guard(() => svc().listTasks(boardId))
         if (tasks) {
             state.tasks = state.tasks.filter(t => t.boardId !== boardId).concat(tasks)
         }
+    }
+
+    /** Calls the theatrical `vibeCheck` service method — see its doc comment for why it exists. */
+    async function checkVibe(): Promise<void> {
+        const boardId = state.selectedBoardId
+        if (!boardId) return
+        state.vibeLoading = true
+        const result = await guard(() => svc().vibeCheck(boardId))
+        if (result) state.vibe = result
+        state.vibeLoading = false
     }
 
     async function createBoard(input: BoardInput): Promise<void> {
@@ -224,6 +241,7 @@ export function useWorkspace() {
         init,
         reset,
         selectBoard,
+        checkVibe,
         createBoard,
         updateBoard,
         archiveBoard,

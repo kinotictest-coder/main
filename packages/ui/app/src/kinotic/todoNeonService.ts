@@ -5,7 +5,7 @@ import type {
     BoardInput, BoardPatch,
     TaskInput, TaskPatch,
     TagInput, TagPatch,
-    BoardStats, TaskStatus,
+    BoardStats, VibeCheckResult, TaskStatus,
 } from './types.js'
 
 const ADDRESS = `${APP_ZONE}~io.kinotic.todoneon.TodoNeonService`
@@ -86,6 +86,9 @@ export class TodoNeonService {
     // Dashboard
     boardStats(boardId: string): Promise<BoardStats> {
         return this.proxy.invoke('boardStats', [boardId])
+    }
+    vibeCheck(boardId: string): Promise<VibeCheckResult> {
+        return this.proxy.invoke('vibeCheck', [boardId])
     }
 }
 

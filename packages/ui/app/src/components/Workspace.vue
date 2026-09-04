@@ -111,10 +111,18 @@ function saveEditTags(tagIds: string[]): void {
                         />
                     </div>
                     <div class="actions">
+                        <button class="btn btn-ghost" :disabled="ws.state.vibeLoading" @click="ws.checkVibe()">
+                            {{ ws.state.vibeLoading ? 'Checking…' : 'Vibe check' }}
+                        </button>
                         <button class="btn btn-ghost" @click="showTags = true">Tags</button>
                         <button class="btn btn-ghost" @click="removeBoard">Delete board</button>
                     </div>
                 </header>
+
+                <p v-if="ws.state.vibe && ws.state.vibe.boardId === board.id" class="vibe-result subtle">
+                    {{ ws.state.vibe.verdict }} — score {{ ws.state.vibe.score }}/100
+                    ({{ ws.state.vibe.taskCount }} tasks, {{ ws.state.vibe.tookMs }}ms)
+                </p>
 
                 <StatBar v-if="stats" :stats="stats" />
 
@@ -221,6 +229,7 @@ function saveEditTags(tagIds: string[]): void {
 .quick .energy { flex: none; width: 110px; background: var(--bg-1); }
 
 .inline-err { color: var(--rose); font-size: 0.8rem; }
+.vibe-result { color: var(--text-1); font-size: 0.8rem; margin: -0.4rem 0 0; }
 
 .columns {
     flex: 1;

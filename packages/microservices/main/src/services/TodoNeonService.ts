@@ -4,13 +4,16 @@ import type {
     BoardInput, BoardPatch,
     TaskInput, TaskPatch,
     TagInput, TagPatch,
-    BoardStats,
+    BoardStats, VibeCheckResult,
     TaskStatus, TaskEnergy, BoardAccent,
 } from './types.js'
 
 const ACCENTS: readonly BoardAccent[] = ['aqua', 'magenta', 'lime', 'violet', 'amber', 'rose']
 const STATUSES: readonly TaskStatus[] = ['BACKLOG', 'ACTIVE', 'DONE']
 const ENERGIES: readonly TaskEnergy[] = ['LOW', 'MEDIUM', 'HIGH']
+const ENERGY_WEIGHT: Record<TaskEnergy, number> = { LOW: 1, MEDIUM: 2, HIGH: 3 }
+
+const sleep = (ms: number): Promise<void> => new Promise(resolve => setTimeout(resolve, ms))
 
 // Repositories expose findAll / findById / search but no "find by field" query, so the
 // service pages everything in and filters in memory. A personal todo board is small;
@@ -228,6 +231,36 @@ export class TodoNeonService {
             if (task.status !== 'DONE' && task.dueDate > 0 && task.dueDate < now) stats.overdue++
         }
         return stats
+    }
+
+    /**
+     * A deliberately theatrical health check: paces itself with a random delay and
+     * occasionally fails outright, so it exercises the same span/latency/error paths
+     * as real traffic without needing real traffic. Exists to give the OTEL wiring in
+     * `main.ts` something to show — not part of the todo/board domain.
+     */
+    async vibeCheck(boardId: string): Promise<VibeCheckResult> {
+        const board = await this.requireBoard(boardId)
+        const started = Date.now()
+
+        await sleep(120 + Math.random() * 480)
+
+        if (Math.random() < 0.15) {
+            throw new Error(`Vibe check overloaded on board "${board.name}" — the neon grid flickered, try again`)
+        }
+
+        const tasks = (await this.loadAll(this.tasks)).filter(t => t.boardId === boardId)
+        const doneRatio = tasks.length ? tasks.filter(t => t.status === 'DONE').length / tasks.length : 0
+        const avgEnergy = tasks.length
+            ? tasks.reduce((sum, t) => sum + ENERGY_WEIGHT[t.energy as TaskEnergy], 0) / tasks.length
+            : 0
+        const score = Math.round(doneRatio * 60 + (avgEnergy / 3) * 40)
+        const verdict = score >= 80 ? '🔥 blazing'
+            : score >= 55 ? '⚡ glowing'
+            : score >= 30 ? '😌 chill'
+            : '🌑 dim'
+
+        return { boardId, score, verdict, taskCount: tasks.length, tookMs: Date.now() - started }
     }
 
     // ---------------------------------------------------------------- internals

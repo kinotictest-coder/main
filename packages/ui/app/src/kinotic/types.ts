@@ -69,3 +69,12 @@ export interface BoardStats {
     overdue: number
     total: number
 }
+
+/** Result of a TodoNeonService.vibeCheck call. */
+export interface VibeCheckResult {
+    boardId: string
+    score: number
+    verdict: string
+    taskCount: number
+    tookMs: number
+}
