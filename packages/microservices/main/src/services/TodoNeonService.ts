@@ -8,7 +8,7 @@ import type {
     TaskStatus, TaskEnergy, BoardAccent,
 } from './types.js'
 
-const ACCENTS: readonly BoardAccent[] = ['aqua', 'magenta', 'lime', 'violet', 'amber', 'rose']
+const ACCENTS: readonly BoardAccent[] = ['aqua', 'magenta', 'lime', 'azure', 'amber', 'rose']
 const STATUSES: readonly TaskStatus[] = ['BACKLOG', 'ACTIVE', 'DONE']
 const ENERGIES: readonly TaskEnergy[] = ['LOW', 'MEDIUM', 'HIGH']
 

@@ -20,7 +20,7 @@ function submit(): void {
 
 <template>
     <div class="login">
-        <form class="card glow panel accent-violet" @submit.prevent="submit">
+        <form class="card glow panel accent-azure" @submit.prevent="submit">
             <div class="brand">
                 <span class="dot"></span>
                 <div>
