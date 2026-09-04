@@ -1,0 +1,97 @@
+# main
+
+A Kinotic isomorphic TypeScript project. Entities are plain TypeScript classes, and
+the Kinotic CLI turns them into typed repository classes you can use from both server
+and client code.
+
+## Layout
+
+```
+.config/kinotic.config.ts     Project config (organization, application, entity paths)
+packages/domain/index.ts      Package entry — export your entities and repositories here
+packages/domain/model         Entity classes you write
+packages/domain/repositories  Repository classes generated from those entities
+packages/microservices/main   Starter microservice (zone setup + connect)
+packages/ui                   User interfaces
+```
+
+## Getting started
+
+```bash
+bun install
+```
+
+The Kinotic CLI is installed as a dev dependency, so no global install is required.
+
+## Working with entities
+
+1. Write an entity under `packages/domain/model`. Decorate the class with `@Entity`
+   and mark its identifier with `@Id`:
+
+   ```ts
+   import { Entity, Id } from '@kinotic-ai/persistence'
+
+   @Entity()
+   export class Customer {
+     @Id
+     public id: string = ''
+     public name: string = ''
+   }
+   ```
+
+2. Generate the repository classes:
+
+   ```bash
+   bun run generate
+   ```
+
+   This writes `packages/domain/repositories/CustomerRepository.ts` along with
+   `packages/domain/repositories/generated/BaseCustomerRepository.ts`. Edit the
+   `CustomerRepository` class to add your own logic — the `Base*` classes under
+   `generated/` are overwritten on every run.
+
+3. Type check your work:
+
+   ```bash
+   bun run type-check
+   ```
+
+4. Commit and push. Kinotic OS reads entity definitions from the connected GitHub
+   repository and synchronizes them for you, so there is nothing to log in to or push
+   from your machine.
+
+## Microservices and UI packages
+
+Each microservice or UI is its own workspace package nested under
+`packages/microservices/` or `packages/ui/`. The starter service at
+`packages/microservices/main` shows the shape — copy it for additional services:
+a `package.json` that depends on the domain package with
+`"@main/domain": "workspace:*"`, a `tsconfig.json` extending
+`tsconfig.base.json`, and an entry registered in `bunup.config.ts`. Inside this
+repository the domain package resolves to its TypeScript source (the `development`
+and `bun` export conditions), so imports type-check and run without a prior build;
+consumers that install it from a registry get the built `dist/` output instead.
+
+For production, build a microservice into a single-file executable from its package
+directory:
+
+```bash
+bun build --compile src/main.ts --outfile bin/<service-name>
+```
+
+This bundles the service together with the domain package's TypeScript source, so no
+prior domain build is needed. Use `bun build --compile` directly for executables:
+bunup's `compile` option currently drops an import binding when bundling the Kinotic
+client libraries and produces a binary that crashes on startup.
+
+## Scripts
+
+| Script                | Description                                              |
+| --------------------- | -------------------------------------------------------- |
+| `bun run generate`    | Generate repository classes from `@Entity` classes        |
+| `bun run type-check`  | Type check every package in the workspace                 |
+| `bun run build`       | Build all packages with bunup                             |
+| `bun run dev`         | Build all packages in watch mode                          |
+
+`build` and `dev` need each package to have an entry point that bunup can find
+(for example `packages/domain/index.ts`) before they produce any output.

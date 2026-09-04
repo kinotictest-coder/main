@@ -1,0 +1,17 @@
+{
+    "name": "@main/main",
+    "version": "0.1.0",
+    "type": "module",
+    "scripts": {
+        "type-check": "tsc --noEmit"
+    },
+    "dependencies": {
+        "@main/domain": "workspace:*",
+        "@kinotic-ai/core": "catalog:",
+        "@kinotic-ai/management-api": "catalog:",
+        "@opentelemetry/exporter-trace-otlp-grpc": "^0.221.0",
+        "@opentelemetry/resources": "^2.10.0",
+        "@opentelemetry/sdk-node": "^0.221.0",
+        "@opentelemetry/semantic-conventions": "^1.40.0"
+    }
+}
