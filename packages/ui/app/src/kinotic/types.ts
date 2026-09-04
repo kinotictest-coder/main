@@ -2,11 +2,11 @@
 // (packages/microservices/main/src/services/types.ts). Kept in the UI because the
 // frontend does not depend on the microservice package.
 
-export type BoardAccent = 'aqua' | 'magenta' | 'lime' | 'azure' | 'amber' | 'rose'
+export type BoardAccent = 'aqua' | 'magenta' | 'lime' | 'violet' | 'amber' | 'rose'
 export type TaskStatus = 'BACKLOG' | 'ACTIVE' | 'DONE'
 export type TaskEnergy = 'LOW' | 'MEDIUM' | 'HIGH'
 
-export const ACCENTS: readonly BoardAccent[] = ['aqua', 'magenta', 'lime', 'azure', 'amber', 'rose']
+export const ACCENTS: readonly BoardAccent[] = ['aqua', 'magenta', 'lime', 'violet', 'amber', 'rose']
 export const STATUSES: readonly TaskStatus[] = ['BACKLOG', 'ACTIVE', 'DONE']
 export const ENERGIES: readonly TaskEnergy[] = ['LOW', 'MEDIUM', 'HIGH']
 

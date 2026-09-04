@@ -6,7 +6,7 @@ defineProps<{ stats: BoardStats }>()
 
 <template>
     <div class="statbar">
-        <div class="stat accent-azure"><span class="dot"></span><b>{{ stats.backlog }}</b> backlog</div>
+        <div class="stat accent-violet"><span class="dot"></span><b>{{ stats.backlog }}</b> backlog</div>
         <div class="stat accent-aqua"><span class="dot"></span><b>{{ stats.active }}</b> in flight</div>
         <div class="stat accent-lime"><span class="dot"></span><b>{{ stats.done }}</b> done</div>
         <div class="stat accent-rose" :class="{ dim: stats.overdue === 0 }"><span class="dot"></span><b>{{ stats.overdue }}</b> overdue</div>

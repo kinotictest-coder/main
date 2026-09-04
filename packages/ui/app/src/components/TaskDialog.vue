@@ -53,7 +53,7 @@ function submit(): void {
 
 <template>
     <div class="overlay" @click.self="emit('close')">
-        <div class="card glow dialog accent-azure">
+        <div class="card glow dialog accent-violet">
             <header>
                 <h3>Edit task</h3>
                 <button class="btn btn-ghost btn-icon" @click="emit('close')">✕</button>

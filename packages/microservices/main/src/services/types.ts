@@ -3,7 +3,7 @@
  * platform can derive an IDL for them and clients can build the payloads by hand.
  */
 
-export type BoardAccent = 'aqua' | 'magenta' | 'lime' | 'azure' | 'amber' | 'rose'
+export type BoardAccent = 'aqua' | 'magenta' | 'lime' | 'violet' | 'amber' | 'rose'
 export type TaskStatus = 'BACKLOG' | 'ACTIVE' | 'DONE'
 export type TaskEnergy = 'LOW' | 'MEDIUM' | 'HIGH'
 
