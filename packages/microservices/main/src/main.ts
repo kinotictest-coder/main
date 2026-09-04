@@ -1,5 +1,7 @@
 import { Kinotic } from '@kinotic-ai/core'
+import { PersistencePlugin } from '@kinotic-ai/persistence'
 import { appZone } from '@kinotic-ai/management-api'
+import { TodoNeonService } from './services/TodoNeonService.js'
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-grpc'
 import { resourceFromAttributes } from '@opentelemetry/resources'
 import { NodeSDK } from '@opentelemetry/sdk-node'
@@ -28,14 +30,20 @@ telemetry?.start()
 // The zone prefix must be set before any @Publish class is instantiated.
 Kinotic.zonePrefix = appZone(config.organizationId, config.applicationId)
 
+// The generated repositories the service constructs need the persistence plugin
+// registered first.
+Kinotic.use(PersistencePlugin)
+
 // Instantiate @Publish services here. Before or after connect() both work — registrations
 // queue until the connection is up and re-subscribe on every reconnect.
+const todoNeon = new TodoNeonService()
 
 // Resolves the server from KINOTIC_SERVER_HOST / KINOTIC_SERVER_PORT / KINOTIC_SERVER_USE_SSL and
 // the credentials from KINOTIC_CLIENT_ID + KINOTIC_CLIENT_SECRET, or KINOTIC_TOKEN. Pass a
 // ConnectOptions to override any of it.
 await Kinotic.connect()
 console.log(`main microservice running in zone ${Kinotic.zonePrefix}`)
+console.log(`published ${todoNeon.constructor.name} at io.kinotic.todoneon.TodoNeonService`)
 
 // Spans are batched, so the last ones are still buffered when the workload is asked to stop.
 process.on('SIGTERM', () => {

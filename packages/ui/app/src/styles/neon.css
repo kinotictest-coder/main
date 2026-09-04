@@ -1,0 +1,151 @@
+:root {
+    color-scheme: dark;
+
+    --bg-0: #05060c;
+    --bg-1: #0b0e1a;
+    --bg-2: #121629;
+    --bg-3: #1a1f3a;
+    --line: #262c4d;
+    --text-0: #eef1ff;
+    --text-1: #aab0d6;
+    --text-2: #6f76a3;
+
+    --aqua: #22e6d3;
+    --magenta: #ff3df0;
+    --lime: #a8ff3d;
+    --violet: #9d5bff;
+    --amber: #ffb03d;
+    --rose: #ff5d7e;
+
+    --accent: var(--aqua);
+    --radius: 14px;
+    --font: 'Space Grotesk', 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body, #app {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    background:
+        radial-gradient(1200px 600px at 12% -10%, rgba(157, 91, 255, 0.18), transparent 60%),
+        radial-gradient(1000px 500px at 100% 0%, rgba(34, 230, 211, 0.12), transparent 55%),
+        var(--bg-0);
+    color: var(--text-0);
+    font-family: var(--font);
+    -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 { margin: 0; font-weight: 600; letter-spacing: 0.02em; }
+button { font-family: inherit; }
+input, textarea, select { font-family: inherit; }
+
+.accent-aqua { --accent: var(--aqua); }
+.accent-magenta { --accent: var(--magenta); }
+.accent-lime { --accent: var(--lime); }
+.accent-violet { --accent: var(--violet); }
+.accent-amber { --accent: var(--amber); }
+.accent-rose { --accent: var(--rose); }
+
+.neon-text {
+    color: var(--accent);
+    text-shadow: 0 0 8px color-mix(in srgb, var(--accent) 55%, transparent);
+}
+
+.card {
+    background: linear-gradient(180deg, var(--bg-2), var(--bg-1));
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+}
+
+.glow {
+    border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+    box-shadow:
+        0 0 0 1px color-mix(in srgb, var(--accent) 30%, transparent),
+        0 0 24px -6px color-mix(in srgb, var(--accent) 45%, transparent);
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    padding: 0.5rem 0.9rem;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: var(--bg-3);
+    color: var(--text-0);
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.05s ease;
+}
+.btn:hover { border-color: color-mix(in srgb, var(--accent) 60%, var(--line)); }
+.btn:active { transform: translateY(1px); }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.btn-primary {
+    background: color-mix(in srgb, var(--accent) 18%, var(--bg-3));
+    border-color: color-mix(in srgb, var(--accent) 55%, var(--line));
+    color: var(--text-0);
+    box-shadow: 0 0 18px -6px color-mix(in srgb, var(--accent) 60%, transparent);
+}
+.btn-ghost { background: transparent; }
+.btn-icon { padding: 0.4rem 0.55rem; }
+.btn-sm { padding: 0.3rem 0.55rem; font-size: 0.75rem; }
+
+.field {
+    width: 100%;
+    padding: 0.6rem 0.75rem;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: var(--bg-0);
+    color: var(--text-0);
+    font-size: 0.9rem;
+}
+.field:focus {
+    outline: none;
+    border-color: color-mix(in srgb, var(--accent) 70%, var(--line));
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
+}
+
+.chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35em;
+    padding: 0.15rem 0.55rem;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    border: 1px solid color-mix(in srgb, var(--accent) 45%, var(--line));
+    color: color-mix(in srgb, var(--accent) 85%, var(--text-0));
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+    white-space: nowrap;
+}
+
+.muted { color: var(--text-2); }
+.subtle { color: var(--text-1); }
+
+.dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+    flex: none;
+}
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: var(--bg-3); border-radius: 999px; }
+::-webkit-scrollbar-track { background: transparent; }
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(3, 4, 10, 0.72);
+    backdrop-filter: blur(4px);
+    display: grid;
+    place-items: center;
+    padding: 1.5rem;
+    z-index: 40;
+}
