@@ -36,10 +36,10 @@ export class TodoNeonService {
 
     // ---------------------------------------------------------------- Boards
 
-    async listBoards(includeArchived: boolean = false): Promise<Board[]> {
+    async listBoards(): Promise<Board[]> {
         const all = await this.loadAll(this.boards)
         return all
-            .filter(b => includeArchived || !b.archived)
+            .filter(b => !b.archived)
             .sort((a, b) => a.position - b.position || a.createdAt - b.createdAt)
     }
 

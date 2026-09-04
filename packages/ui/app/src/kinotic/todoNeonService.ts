@@ -24,8 +24,8 @@ export class TodoNeonService {
     }
 
     // Boards
-    listBoards(includeArchived = false): Promise<Board[]> {
-        return this.proxy.invoke('listBoards', [includeArchived])
+    listBoards(): Promise<Board[]> {
+        return this.proxy.invoke('listBoards', [])
     }
     createBoard(input: BoardInput): Promise<Board> {
         return this.proxy.invoke('createBoard', [input])

@@ -89,7 +89,7 @@ export function useWorkspace() {
         state.loading = true
         state.error = null
         try {
-            const [boards, tags] = await Promise.all([svc().listBoards(false), svc().listTags()])
+            const [boards, tags] = await Promise.all([svc().listBoards(), svc().listTags()])
             state.boards = boards
             state.tags = tags
             if (boards.length > 0) await selectBoard(boards[0]!.id ?? null)
