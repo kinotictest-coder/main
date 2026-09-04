@@ -3,6 +3,7 @@ import type { KinoticProjectConfig } from '@kinotic-ai/management-api'
 const config: KinoticProjectConfig = {
   organizationId: "minds-ignited",
   applicationId: "todo-neon",
+  projectId: "todo-neon-main",
   entitiesPaths: [
     {
       path: "packages/domain/model",
