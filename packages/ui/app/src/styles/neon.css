@@ -13,7 +13,7 @@
     --aqua: #22e6d3;
     --magenta: #ff3df0;
     --lime: #a8ff3d;
-    --violet: #9d5bff;
+    --azure: #3aa0ff;
     --amber: #ffb03d;
     --rose: #ff5d7e;
 
@@ -31,7 +31,7 @@ html, body, #app {
 
 body {
     background:
-        radial-gradient(1200px 600px at 12% -10%, rgba(157, 91, 255, 0.18), transparent 60%),
+        radial-gradient(1200px 600px at 12% -10%, rgba(58, 160, 255, 0.18), transparent 60%),
         radial-gradient(1000px 500px at 100% 0%, rgba(34, 230, 211, 0.12), transparent 55%),
         var(--bg-0);
     color: var(--text-0);
@@ -46,7 +46,7 @@ input, textarea, select { font-family: inherit; }
 .accent-aqua { --accent: var(--aqua); }
 .accent-magenta { --accent: var(--magenta); }
 .accent-lime { --accent: var(--lime); }
-.accent-violet { --accent: var(--violet); }
+.accent-azure { --accent: var(--azure); }
 .accent-amber { --accent: var(--amber); }
 .accent-rose { --accent: var(--rose); }
 

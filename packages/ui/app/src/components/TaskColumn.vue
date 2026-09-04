@@ -20,7 +20,7 @@ const emit = defineEmits<{
 <template>
     <section class="column">
         <header>
-            <span class="dot" :class="`accent-${status === 'BACKLOG' ? 'violet' : status === 'ACTIVE' ? 'aqua' : 'lime'}`"></span>
+            <span class="dot" :class="`accent-${status === 'BACKLOG' ? 'azure' : status === 'ACTIVE' ? 'aqua' : 'lime'}`"></span>
             <h3>{{ label }}</h3>
             <span class="count muted">{{ tasks.length }}</span>
         </header>

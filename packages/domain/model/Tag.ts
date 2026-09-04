@@ -15,7 +15,7 @@ export class Tag {
 
     /**
      * Neon colour key the UI maps to a glow colour.
-     * One of: aqua | magenta | lime | violet | amber | rose.
+     * One of: aqua | magenta | lime | azure | amber | rose.
      */
     @NotNull
     color: string = 'aqua'
