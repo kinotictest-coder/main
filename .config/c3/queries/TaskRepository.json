@@ -1,0 +1,31 @@
+{
+  "entityServiceName": "TaskRepository",
+  "namedQueries": [
+    {
+      "name": "countByBoardAndStatus",
+      "decorators": [
+        {
+          "type": "Query",
+          "statements": "SELECT COUNT(*) FROM Task WHERE boardId = :boardId AND status = :status"
+        }
+      ],
+      "returnType": {
+        "type": "int"
+      },
+      "parameters": [
+        {
+          "name": "boardId",
+          "type": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "status",
+          "type": {
+            "type": "string"
+          }
+        }
+      ]
+    }
+  ]
+}

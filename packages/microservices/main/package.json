@@ -8,6 +8,7 @@
     "dependencies": {
         "@main/domain": "workspace:*",
         "@kinotic-ai/core": "catalog:",
+        "@kinotic-ai/persistence": "catalog:",
         "@kinotic-ai/management-api": "catalog:",
         "@opentelemetry/exporter-trace-otlp-grpc": "^0.221.0",
         "@opentelemetry/resources": "^2.10.0",

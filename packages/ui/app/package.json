@@ -1,0 +1,26 @@
+{
+    "name": "@main/app",
+    "version": "0.1.0",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build",
+        "preview": "vite preview",
+        "type-check": "tsc --noEmit",
+        "type-check:vue": "vue-tsc --noEmit"
+    },
+    "dependencies": {
+        "@kinotic-ai/core": "catalog:",
+        "@kinotic-ai/persistence": "catalog:",
+        "@main/domain": "workspace:*",
+        "rxjs": "^7.8.2",
+        "vue": "^3.5.13"
+    },
+    "devDependencies": {
+        "@vitejs/plugin-vue": "^6.0.0",
+        "typescript": "^5.9.3",
+        "vite": "^7.0.0",
+        "vue-tsc": "^3.0.0"
+    }
+}

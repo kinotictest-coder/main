@@ -1,0 +1,17 @@
+{
+    "extends": "../../../tsconfig.base.json",
+    "compilerOptions": {
+        "composite": false,
+        "lib": ["ESNext", "DOM", "DOM.Iterable"],
+        "types": ["vite/client"],
+        "paths": {
+            "@main/domain": ["../../domain/index.ts"],
+            "@/*": ["./src/*"]
+        }
+    },
+    // `type-check` runs plain `tsc` (vue-tsc does not work under Bun). It checks the
+    // TypeScript logic; `*.vue` files are treated as opaque modules via src/env.d.ts.
+    // Run `bun run type-check:vue` under Node for full single-file-component checking.
+    "include": ["src/**/*.ts", "src/**/*.d.ts", "vite.config.ts"],
+    "exclude": ["node_modules", "dist"]
+}
