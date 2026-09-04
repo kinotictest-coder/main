@@ -7,11 +7,13 @@ import { ACCENTS } from '@/kinotic/types'
 defineProps<{
     boards: Board[]
     selectedId: string | null
+    email: string
 }>()
 
 const emit = defineEmits<{
     (e: 'select', id: string): void
     (e: 'create', input: { name: string; accent: BoardAccent }): void
+    (e: 'logout'): void
 }>()
 
 const creating = ref(false)
@@ -74,6 +76,11 @@ function submit(): void {
             </div>
         </div>
         <button v-else class="btn btn-ghost add" @click="creating = true">+ New board</button>
+
+        <footer class="account">
+            <span class="email muted" :title="email">{{ email }}</span>
+            <button class="btn btn-ghost btn-sm" @click="emit('logout')">Sign out</button>
+        </footer>
     </aside>
 </template>
 
@@ -88,6 +95,22 @@ function submit(): void {
     gap: 1.25rem;
     background: linear-gradient(180deg, var(--bg-1), var(--bg-0));
     overflow-y: auto;
+}
+.account {
+    margin-top: auto;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+.email {
+    font-size: 0.75rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
 }
 .brand { display: flex; gap: 0.6rem; align-items: flex-start; }
 .brand h1 { font-size: 1.15rem; }

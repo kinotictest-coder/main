@@ -7,44 +7,52 @@ const APPLICATION_ID = 'todo-neon'
 /** `app.<org>.<app>` — the zone Todo Neon's own services are published in. */
 export const APP_ZONE = `app.${ORGANIZATION_ID}.${APPLICATION_ID}`
 
-let connecting: Promise<void> | null = null
+Kinotic.use(PersistencePlugin)
 
 /**
- * Connects the Kinotic singleton once and registers the persistence plugin.
- *
- * Server: `VITE_KINOTIC_HOST` / `_PORT` / `_USE_SSL`, or the page origin when unset.
- * Credentials: `VITE_KINOTIC_EMAIL` + `VITE_KINOTIC_PASSWORD` (an application user
- * created on the portal Members page), or the browser session cookie when unset.
+ * Server override for local dev against a non-default host — `VITE_KINOTIC_HOST` /
+ * `_PORT` / `_USE_SSL`. Unset, `Kinotic.connect` falls back to the page's own origin.
+ * There is no build-time email/password: credentials always come from the login form.
  */
-export function connect(): Promise<void> {
-    if (!connecting) {
-        connecting = doConnect().catch(err => {
-            connecting = null
-            throw err
-        })
+function serverOptions(): ConnectOptions['server'] | undefined {
+    const host = import.meta.env.VITE_KINOTIC_HOST
+    if (!host) return undefined
+    return {
+        host,
+        port: import.meta.env.VITE_KINOTIC_PORT ? Number(import.meta.env.VITE_KINOTIC_PORT) : undefined,
+        useSSL: import.meta.env.VITE_KINOTIC_USE_SSL === 'true',
     }
-    return connecting
 }
 
-async function doConnect(): Promise<void> {
-    Kinotic.use(PersistencePlugin)
-
-    const options: ConnectOptions = {}
-
-    const host = import.meta.env.VITE_KINOTIC_HOST
-    if (host) {
-        options.server = {
-            host,
-            port: import.meta.env.VITE_KINOTIC_PORT ? Number(import.meta.env.VITE_KINOTIC_PORT) : undefined,
-            useSSL: import.meta.env.VITE_KINOTIC_USE_SSL === 'true',
-        }
+/**
+ * Tries to resume an existing browser session with no prompt. Resolves `false` — never
+ * throws — when there is no session to resume, which is the ordinary case for a user who
+ * has not logged in yet.
+ */
+export async function connectFromSession(): Promise<boolean> {
+    try {
+        await Kinotic.connect({ server: serverOptions(), maxConnectionAttempts: 1 })
+        return true
+    } catch {
+        return false
     }
+}
 
-    const email = import.meta.env.VITE_KINOTIC_EMAIL
-    const password = import.meta.env.VITE_KINOTIC_PASSWORD
-    if (email && password) {
-        options.credentials = new BasicCredentialsResolver(email, password, ORGANIZATION_ID, APPLICATION_ID)
-    }
+/**
+ * Interactive login for an application user (created on the portal's Members page,
+ * scoped to this application). Rejects with an error whose message is fit to show the
+ * user directly — bad credentials, an unknown user, or a network/server problem.
+ */
+export async function login(email: string, password: string): Promise<void> {
+    await Kinotic.connect({
+        server: serverOptions(),
+        credentials: new BasicCredentialsResolver(email, password, ORGANIZATION_ID, APPLICATION_ID),
+        // Bounded so bad credentials fail fast with a message instead of retrying the
+        // connection forever (the default) with no feedback on the login button.
+        maxConnectionAttempts: 3,
+    })
+}
 
-    await Kinotic.connect(options)
+export async function logout(): Promise<void> {
+    if (Kinotic.eventBus.isConnected()) await Kinotic.disconnect()
 }

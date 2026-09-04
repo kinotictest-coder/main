@@ -10,8 +10,6 @@ interface ImportMetaEnv {
     readonly VITE_KINOTIC_HOST?: string
     readonly VITE_KINOTIC_PORT?: string
     readonly VITE_KINOTIC_USE_SSL?: string
-    readonly VITE_KINOTIC_EMAIL?: string
-    readonly VITE_KINOTIC_PASSWORD?: string
 }
 
 interface ImportMeta {

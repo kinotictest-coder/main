@@ -1,6 +1,5 @@
 import { computed, reactive } from 'vue'
 import type { Board, Task, Tag } from '@main/domain'
-import { connect } from '@/kinotic/connection'
 import { todoNeon } from '@/kinotic/todoNeonService'
 import type {
     BoardInput, BoardPatch, TaskInput, TaskPatch, TagInput, TagPatch,
@@ -84,12 +83,12 @@ export function useWorkspace() {
         return map
     })
 
+    /** Loads the workspace. Assumes the caller is already connected (see useAuth). */
     async function init(): Promise<void> {
         if (state.ready || state.loading) return
         state.loading = true
         state.error = null
         try {
-            await connect()
             const [boards, tags] = await Promise.all([svc().listBoards(false), svc().listTags()])
             state.boards = boards
             state.tags = tags
@@ -100,6 +99,17 @@ export function useWorkspace() {
         } finally {
             state.loading = false
         }
+    }
+
+    /** Clears loaded data so a fresh init() re-fetches — call after logging out. */
+    function reset(): void {
+        state.ready = false
+        state.loading = false
+        state.error = null
+        state.boards = []
+        state.tags = []
+        state.tasks = []
+        state.selectedBoardId = null
     }
 
     async function selectBoard(boardId: string | null): Promise<void> {
@@ -212,6 +222,7 @@ export function useWorkspace() {
         stats,
         tagById,
         init,
+        reset,
         selectBoard,
         createBoard,
         updateBoard,
